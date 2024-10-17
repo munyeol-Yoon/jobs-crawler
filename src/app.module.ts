@@ -13,6 +13,7 @@ import { Job } from './crawler/entity/job.entity';
       isGlobal: true,
       validationSchema: Joi.object({
         ENV: Joi.string().valid('dev', 'prod').required(),
+        PORT: Joi.string().required(),
         DB_TYPE: Joi.string().valid('postgres').required(),
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.number().required(),
