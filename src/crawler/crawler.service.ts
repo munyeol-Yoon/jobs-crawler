@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import puppeteer from 'puppeteer';
+import { Repository } from 'typeorm';
+import { Job } from './entity/job.entity';
 
 @Injectable()
 export class CrawlerService {
+  constructor(
+    @InjectRepository(Job)
+    private jobRepository: Repository<Job>,
+  ) {}
+
   async scrapeRecruitInfo() {
     try {
-      const url = 'https://www.skcareers.com/Recruit';
+      const url = process.env.CRAWLER_SK_URL;
 
       const browser = await puppeteer.launch({ headless: true });
       const page = await browser.newPage();
@@ -47,6 +55,18 @@ export class CrawlerService {
       }
 
       await browser.close();
+
+      for (const job of jobListings) {
+        const existJob = await this.jobRepository.findOne({
+          where: { link: job.link },
+        });
+
+        if (!existJob) {
+          const jobEntity = this.jobRepository.create(job);
+          await this.jobRepository.save(jobEntity);
+        }
+      }
+
       return jobListings;
     } catch (err) {
       console.error(err);

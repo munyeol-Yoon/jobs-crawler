@@ -5,7 +5,6 @@ import * as Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CrawlerModule } from './crawler/crawler.module';
-import { CrawlerService } from './crawler/crawler.service';
 import { Job } from './crawler/entity/job.entity';
 
 @Module({
@@ -20,6 +19,7 @@ import { Job } from './crawler/entity/job.entity';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
+        CRAWLER_SK_URL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
@@ -38,6 +38,6 @@ import { Job } from './crawler/entity/job.entity';
     CrawlerModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CrawlerService],
+  providers: [AppService],
 })
 export class AppModule {}
