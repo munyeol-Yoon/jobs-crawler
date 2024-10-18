@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import puppeteer from 'puppeteer';
+import { CRAWLER_SK_URL } from 'src/constant/crawling.constant';
 import { Repository } from 'typeorm';
 import { Job } from './entity/job.entity';
 
@@ -11,9 +12,9 @@ export class CrawlerService {
     private jobRepository: Repository<Job>,
   ) {}
 
-  async scrapeRecruitInfo() {
+  async scrapeSKRecruitInfo() {
     try {
-      const url = process.env.CRAWLER_SK_URL;
+      const url = CRAWLER_SK_URL;
 
       const browser = await puppeteer.launch({ headless: true });
       const page = await browser.newPage();

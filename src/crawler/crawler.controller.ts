@@ -7,6 +7,6 @@ export class CrawlerController {
 
   @Get('/jobs')
   async getRecruitInfo() {
-    return await this.crawlerService.scrapeRecruitInfo();
+    return await this.crawlerService.scrapeSKRecruitInfo();
   }
 }
